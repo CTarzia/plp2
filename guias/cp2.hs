@@ -1,4 +1,6 @@
 --conjuntos como funciones
+
+--e 19
 type Conj a = (a->Bool)
 
 conj1 = (\x -> x == 1 || x == 2)
@@ -72,6 +74,7 @@ poli = Suma (Cte 0) (Prod X X) -- p(x) = 0 + x*x
 
 evaluar :: Num a => a -> Polinomio a -> a
 evaluar p n = foldPoli n (\c -> c) (\recI recD -> recI + recD) (\recI recD -> recI * recD) p
+
 {-evaluar X n = n -- p(x) = x
 evaluar (Cte c) n = c
 evaluar (Suma p1 p2) n = (evaluar p1 n) + (evaluar p2 n)
@@ -95,5 +98,3 @@ foldPoli casoX casoCte casoSuma casoProd (Suma p1 p2) = casoSuma (rec p1 rec p2)
 foldPoli casoX casoCte casoSuma casoProd (Prod p1 p2) = casoProd rec p1 rec p2)
               where rec = foldPoli casoX casoCte casoSuma casoProd-}
 
---p1e23
-data RoseTree a = Rose a [RoseTree a]
