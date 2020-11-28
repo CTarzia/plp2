@@ -55,7 +55,7 @@ agregarACadaUno listaOriginal numsAAgregar = recr listaOriginal (agregarAUno num
 agregarAUno :: [Int] -> [Int] -> [[Int]] 
 agregarAUno numsAAgregar l = recr l (\n -> \ns -> l ++ [n]) numsAAgregar-}
 
---ej 9 --ayuda
+--ej 9
 type DivideConquer a b = (a -> Bool) --es o no trivial
                        -> (a -> b)  --resuelve caso trivial
                        -> (a -> [a]) -- parte en subproblemas
@@ -66,7 +66,8 @@ type DivideConquer a b = (a -> Bool) --es o no trivial
 dc :: DivideConquer a b
 dc trivial solve split combine x
                           | trivial x = solve x
-                          | otherwise = combine (map solve (split x))
+                          | otherwise = combine (map f (split x))
+            where f = dc trivial solve split combine
 
 mergeSort :: Ord a => [a] -> [a]
 mergeSort = dc (\l -> (length l) < 2) 
@@ -77,7 +78,7 @@ mergeSort = dc (\l -> (length l) < 2)
 tuplify2 :: [a] -> (a,a)
 tuplify2 [x,y] = (x,y)
 
-unirListasOrdenadas :: Ord a => [a] -> ([a],[a]) -> [a] --ASHUDA
+unirListasOrdenadas :: Ord a => [a] -> ([a],[a]) -> [a]
 unirListasOrdenadas res (l1,[]) = res ++ l1
 unirListasOrdenadas res ([],l2) = res ++ l2
 unirListasOrdenadas res ((x:xs),(y:ys)) = if (x < y) then unirListasOrdenadas (res ++ [x]) (xs, (y:ys))
@@ -173,15 +174,26 @@ factoriales n = generate (\xs -> length xs == (n+1)) (\xs -> if (length xs) < 2 
 iterateN :: Int -> (a -> a) -> a -> [a]
 iterateN n f x = generateBase (\xs -> length xs == n) x (\x -> f x) 
 
-{-generateFrom' :: ([a]->Bool)->([a]->a)->[a]->[a] --ayuda?
-generateFrom' stop next xs =  takeWhile (\xs -> stop xs) (iterate next (if xs == [])) []
--}
+generateFrom' :: ([a]->Bool)->([a]->a)->[a]->[a] --ayuda?
+generateFrom' = undefined
+-- generateFrom' stop next xs =  takeWhile (\xs -> stop xs) (iterate next (next []) xs)
+-- ayuda: iterate necesita una funcion a->a pero no tengo de donde sacar eso
+
 
 --e17
-foldNat :: (Integer -> Integer -> Integer) -> Integer -> [Integer] -> Integer
-foldNat = foldr
+
+-- Denir y dar el tipo del esquema de recursión foldNat sobre los naturales. Utilizar el tipo Integer de
+--Haskell (la función va a estar denida sólo para los enteros mayores o iguales que 0)
+
+--foldNat :: (Integer -> Integer -> Integer) -> Integer -> [Integer] -> Integer
+-- foldNat :: (b -> b) -> b -> Integer -> b
+-- foldNat cAum cBase int = 
+-- potencia x y = foldNat (\x ->) 1 y 
 
 --no entendi el 2
+
+--Utilizando foldNat, defnir la función potencia.
+
 
 --ej 19
 --e 19
@@ -235,8 +247,11 @@ mapAHD fI fH ahd = case ahd of
                    where rec = mapAHD fI fH
 
 --p1e23
-data RoseTree a = Rose a [RoseTree a]
+data RoseTree a = Rose a
+                | Branch a [RoseTree a]
 
 recRT :: b -> (Rose a -> RoseTree a -> b -> b) -> RoseTree a -> b -- ayuda
-recRT z f (Rose r []) = f r z
+recRT = undefined
+-- recRT z f (Rose r []) = f r z
+--que pasa aca?
 
